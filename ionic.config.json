@@ -1,0 +1,11 @@
+{
+  "name": "msichat",
+  "integrations": {},
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/",
+      "proxyUrl": "http://cors.api.com/api"
+    }
+  ]
+}
