@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Socket} from "ng-socket-io";
+
 /**
  * Generated class for the ChatPage page.
  *
@@ -30,17 +31,6 @@ export class ChatPage {
     this._message = value;
   }
 
-
-
-  appendMessage(msg: object){
-    console.log(this.messages)
-    this.messages.push(msg);
-  }
-
-  private _nickName: string;
-  private _messages: object[] = [];
-  private _message: string;
-
   get nickName(): string {
     return this._nickName;
   }
@@ -49,15 +39,31 @@ export class ChatPage {
     this._nickName = value;
   }
 
-  constructor(private socket: Socket, public navCtrl: NavController, public navParams: NavParams) {
-    this.getMessages();
+  appendMessage(msg: object) {
+    console.log(this.messages)
+    this.messages.push(msg);
+  }
+
+  // nickname
+  private _nickName: string;
+  // array of message objects
+  private _messages: object[] = [];
+  // current message
+  private _message: string;
+
+  constructor(private socket: Socket, public navCtrl: NavController, public navParams: NavParams, public toastCtrl: ToastController) {
+    // listen for messages
+    this.subscribeToEvents();
   }
 
   ionViewDidLoad() {
+    // set nickname to the one which comes from navParams
     this.nickName = this.navParams.get("nick");
-    this.socket.emit('join_chat', {nick: this.nickName})
+    // emit join event with nick
+    this.socket.emit("join", {nick: this.nickName})
   }
 
+  // emit message on button click
   sendMessage() {
     const msg = {name: this.nickName, text: this.message};
     this.appendMessage(msg);
@@ -65,12 +71,28 @@ export class ChatPage {
     this.message = "";
   }
 
-  getMessages() {
+  // subscribe
+  subscribeToEvents() {
     this.socket.on("newMessage", (msg) => {
       this.appendMessage(msg);
     });
-  }
 
+    this.socket.on("userEvent", (data) => {
+      const user = data.nick;
+      const event = data.event;
+
+      const text = `${user} ${event}!`;
+
+      const toast = this.toastCtrl.create({
+        message: text,
+        duration: 3000,
+        position: 'top',
+      });
+
+      toast.present();
+
+    });
+  }
 
 
 }
