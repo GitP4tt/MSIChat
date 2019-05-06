@@ -6,11 +6,11 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import {ChatPageModule} from "../pages/chat/chat.module";
+
+
 
 // import socket library
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
-
 // create config which points to our chat server
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -18,7 +18,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
   ],
   imports: [
     BrowserModule,
@@ -26,8 +26,6 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     //serve socket library globally with config
     SocketIoModule.forRoot(config),
     //make ChatPage available so that we can import in home
-    ChatPageModule
-
   ],
   bootstrap: [IonicApp],
   entryComponents: [
