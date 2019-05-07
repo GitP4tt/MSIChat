@@ -11,6 +11,8 @@ import { HomePage } from '../pages/home/home';
 
 // import socket library
 import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+import {ChatPageModule} from "../pages/chat/chat.module";
+
 // create config which points to our chat server
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -26,6 +28,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     //serve socket library globally with config
     SocketIoModule.forRoot(config),
     //make ChatPage available so that we can import in home
+    ChatPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [

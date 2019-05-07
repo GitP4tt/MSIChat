@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
+import {ChatPage} from "../chat/chat";
 
 @Component({
   selector: 'page-home',
@@ -19,7 +20,11 @@ export class HomePage {
 
   // navTo to chat page
 
+
   constructor(public navCtrl: NavController) {
   }
 
+  navToChat() {
+    this.navCtrl.setRoot(ChatPage, {nick: this.nickName})
+  }
 }
